@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<matrix>
+  <element>
+    <match_index accept_higher="0">0</match_index>
+    <points_win>20</points_win>
+    <points_loss>-10</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">1</match_index>
+    <points_win>21</points_win>
+    <points_loss>-9</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">2</match_index>
+    <points_win>22</points_win>
+    <points_loss>-8</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">3</match_index>
+    <points_win>23</points_win>
+    <points_loss>-7</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">4</match_index>
+    <points_win>24</points_win>
+    <points_loss>-6</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">5</match_index>
+    <points_win>25</points_win>
+    <points_loss>-5</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">6</match_index>
+    <points_win>26</points_win>
+    <points_loss>-4</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">7</match_index>
+    <points_win>27</points_win>
+    <points_loss>-3</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">8</match_index>
+    <points_win>28</points_win>
+    <points_loss>-2</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="0">9</match_index>
+    <points_win>29</points_win>
+    <points_loss>-1</points_loss>
+  </element>
+  <element>
+    <match_index accept_higher="1">10</match_index>
+    <points_win>30</points_win>
+    <points_loss>0</points_loss>
+  </element>
+</matrix>

@@ -1,0 +1,7 @@
+modules python à installer:
+pip install ...
+
+
+help:
+SQLAlchemy in Flask - declarative:
+https://flask.palletsprojects.com/en/1.1.x/patterns/sqlalchemy/#declarative
