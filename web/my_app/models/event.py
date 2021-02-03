@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String  #  , Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
-from . import Base
+from .. import Base  # from . import Base
 
 
 class Gender(enum.Enum):

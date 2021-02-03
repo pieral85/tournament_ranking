@@ -1,13 +1,13 @@
-from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.ext.declarative import declarative_base
 
-import tools.points_matrix as matrix
+# import tools.points_matrix as matrix
 
-# import ipdb
-# ipdb.set_trace()
+# # import ipdb
+# # ipdb.set_trace()
 
-Base = declarative_base()
-points_dict = matrix.get_points_dict()
-test = 5
+# Base = declarative_base()
+# points_dict = matrix.get_points_dict()
+# test = 5
 
 from .club import Club  # Solution #1
 from .draw import Draw

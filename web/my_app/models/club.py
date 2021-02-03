@@ -4,10 +4,19 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import reconstructor, relationship
 from sqlalchemy.orm.session import Session
 
-from . import Base
+# from . import Base  # 2021-02-02
 from .entry import Entry
 from .player import Player
 
+from .. import Base  # from my_app import Base  # this one also works
+# =============================2021-02-02
+# taken from https://www.digitalocean.com/community/tutorials/how-to-structure-large-flask-applications:
+# from app import db
+
+# Define a base model for other database tables to inherit
+# class Club(db.Model):
+#     pass
+# =============================
 
 class Club(Base):
     __tablename__ = 'Club'

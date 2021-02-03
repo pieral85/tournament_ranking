@@ -3,7 +3,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 # from sqlalchemy.orm.session import Session
 
-from . import Base
+from .. import Base  # from . import Base
 
 
 class Link(Base):

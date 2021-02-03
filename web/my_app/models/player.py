@@ -4,7 +4,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import column_property, reconstructor, relationship
 from sqlalchemy.orm.session import Session
 
-from . import Base
+from .. import Base  # from . import Base
 from .entry import Entry
 from .match import Match
 

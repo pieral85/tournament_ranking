@@ -8,7 +8,7 @@ from sqlalchemy.orm import aliased, reconstructor, relationship
 from sqlalchemy.orm.exc import NoResultFound  # , MultipleResultsFound
 from sqlalchemy.orm.session import Session
 
-from . import Base, points_dict
+from .. import Base  # TODO import points_dict  # from . import Base, points_dict
 # import ipdb; ipdb.set_trace()
 # 2020-01-28 from . import entry #from .entry import Entry
 from .draw import Draw, DrawType

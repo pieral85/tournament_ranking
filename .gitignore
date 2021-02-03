@@ -1,5 +1,6 @@
 # Related to current project
 temp.py
+# instance/ # COmmented because already present in file
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
