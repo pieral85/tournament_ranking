@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+  <h1>Index</h1>
+  <p class="important">
+    Welcome on my awesome homepage.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <!-- <th colspan="2">The table header</th> -->
+        <th>Nom</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for club in clubs %}
+      <tr>
+        <td>{{ club.name }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

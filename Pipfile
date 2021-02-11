@@ -10,6 +10,7 @@ sqlalchemy-access = "*"
 
 [dev-packages]
 ipdb = "*"
+flask-debugtoolbar = "*"
 
 [requires]
 python_version = "3.9"

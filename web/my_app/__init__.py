@@ -1,12 +1,20 @@
 from flask import Flask
+# from ..tools import points_matrix
 
 # app = Flask(__name__)
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config') # Now we can access the configuration variables via app.config["VAR_NAME"].
-print('TEST_LOCATION', app.config['TEST_LOCATION'])
-# Load the configuration from the instance folder
+# Load the configuration from the `instance` folder
 app.config.from_pyfile('config.py')
-print('TEST_LOCATION', app.config['TEST_LOCATION'])
+
+
+from flask_debugtoolbar import DebugToolbarExtension
+
+toolbar = DebugToolbarExtension(app)  # TODO Does not seem to be working...delete me in this case
+
+
+
+
 
 
 # =========== db ===========
@@ -44,17 +52,12 @@ session = Session()
 
 
 
+# This import must be done after creation of `Base`,
+# as all models files import `Base` variable
+from .main.controllers import main
 
-#TODO Move me somewhere else
-@app.route("/hello")
-def hello():
-    from .models.club import Club
-    # club_name = 'BC Saint-Légerr'
-    # saint_leger = session.query(Club).filter_by(name=club_name).first()
-    import ipdb; ipdb.set_trace()
-    saint_leger = session.query(Club).filter_by(id=5).first()
-    return f'Hello, {club.name}'
 
+app.register_blueprint(main, url_prefix='/')
 
 
 # def create_app(config_filename):

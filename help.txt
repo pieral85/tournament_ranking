@@ -9,3 +9,4 @@ https://flask.palletsprojects.com/en/1.1.x/patterns/sqlalchemy/#declarative
 TODO
  - Checkout cache functionnality:
    https://exploreflask.com/en/latest/views.html#caching
+ - Ajax requests on table loading: https://live.bootstrap-table.com/example/options/table-ajax.html

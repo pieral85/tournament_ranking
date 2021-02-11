@@ -30,11 +30,18 @@ class Club(Base):
     player_ids = relationship('Player', back_populates='club_id')
 
     @hybrid_property
-    def entriesTEST(self):  # TODO Rename w/ `entry_ids`?
+    def entry_ids(self):
         return (self.session.query(Club, Player, Entry).filter_by(id=self.id)
                 .join(Player, Club.player_ids)
                 .join(Entry, Player.entry_ids)
                 .from_self(Entry).all())
+
+    @hybrid_property
+    def real_match_ids(self):
+        matches = []
+        for entry in self.entry_ids:
+            matches += entry.real_match_ids
+        return matches
 
     @hybrid_property
     def points(self):

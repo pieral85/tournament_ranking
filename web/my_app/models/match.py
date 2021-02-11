@@ -9,11 +9,17 @@ from sqlalchemy.orm.exc import NoResultFound  # , MultipleResultsFound
 from sqlalchemy.orm.session import Session
 
 from .. import Base  # TODO import points_dict  # from . import Base, points_dict
-# import ipdb; ipdb.set_trace()
+# from .. import points_matrix  # working if "from ..tools import points_matrix" has been written in web/my_app/__init__.py
+# from ... import tools  # working
+from ...tools import points_matrix
+# import tools.points_matrix as matrix
+
 # 2020-01-28 from . import entry #from .entry import Entry
 from .draw import Draw, DrawType
 from .link import Link
 # from .player import Player
+
+points_dict = points_matrix.get_points_dict()
 
 
 class Winner(enum.Enum):

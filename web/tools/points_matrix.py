@@ -90,10 +90,13 @@ def get_points_matrix():
 
 def get_points_dict():
     # TODO Manage 'accept_higher_index' attribute
+    # TODO Everytime this function is called, it recomputes matrix. Couldn't we "cache" this?
+    print('\n\nget_points_dict --> CACHE ME!!!')
     return {
         struct.index: struct
         for struct in get_points_matrix()
     }
+
 
 if __name__ == '__main__':
     if WRITE_XML:
