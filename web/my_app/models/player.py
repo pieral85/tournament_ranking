@@ -87,7 +87,7 @@ class Player(Base):
 
     def __str__(self):
         # return f'{self.firstname} {self.name[:1]}.'
-        return f'{self.firstname[0]}.{self.name}'
+        return f'{self.firstname[0]}. {self.name}'
 
 @event.listens_for(Player, 'expire')
 def receive_expire(target, attrs):

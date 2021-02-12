@@ -1,0 +1,20 @@
+{% macro _render_player(match, entry, player, it_is_me=False) -%}
+  {% if it_is_me %}
+    {% set color = 'dark' %}
+  {% elif match.winning_entry_id == entry  %}
+    {% set color = 'success' %}
+  {% else %}
+    {% set color = 'danger' %}
+  {% endif %}
+  <span>{{ player }}</span> <span class="badge badge-pill badge-{{ color }}">{{ match.get_points(entry) }}</span>
+{%- endmacro %}
+
+{% macro render_players(match, as_club=None, as_player=None) -%}
+  {% for entry in (match.team1_id.entry_id, match.team2_id.entry_id) -%}
+    {% for player in entry.player_ids -%}
+      {% set it_is_me = as_club and player.club_id != as_club or as_player and player != as_player %}
+      <span class="ml-1">{{ _render_player(match, entry, player, it_is_me=it_is_me) }}</span>
+    {%- endfor %}
+    <br>
+  {%- endfor %}
+{%- endmacro %}
