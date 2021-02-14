@@ -1,20 +1,76 @@
 {% macro _render_player(match, entry, player, it_is_me=False) -%}
+  {% set win = match.winning_entry_id == entry %}
+  {% set bold = 'font-weight-bold' if win else 'font-weight-light' %}
+
   {% if it_is_me %}
-    {% set color = 'dark' %}
-  {% elif match.winning_entry_id == entry  %}
-    {% set color = 'success' %}
+    {% set color = 'success' if win else 'danger' %}
   {% else %}
-    {% set color = 'danger' %}
+    {% set color = 'dark' %}
   {% endif %}
-  <span>{{ player }}</span> <span class="badge badge-pill badge-{{ color }}">{{ match.get_points(entry) }}</span>
+
+  <span class="{{ bold }}"">
+    <span>{{ player }}</span>
+    <span class="badge badge-pill badge-{{ color }}">
+      {{ match.get_points(entry) }}
+    </span>
+  </span>
 {%- endmacro %}
+
+{# TODO implement font-weight-light #}
 
 {% macro render_players(match, as_club=None, as_player=None) -%}
   {% for entry in (match.team1_id.entry_id, match.team2_id.entry_id) -%}
     {% for player in entry.player_ids -%}
-      {% set it_is_me = as_club and player.club_id != as_club or as_player and player != as_player %}
+      {% set it_is_me = as_club and player.club_id == as_club or as_player and player == as_player %}
       <span class="ml-1">{{ _render_player(match, entry, player, it_is_me=it_is_me) }}</span>
     {%- endfor %}
     <br>
   {%- endfor %}
+{%- endmacro %}
+
+{% macro render_points(match, as_club=None, as_player=None) -%}
+  {% set ns = namespace(points=0, won=False, lost=False) %}
+
+  {% for entry in (match.team1_id.entry_id, match.team2_id.entry_id) -%}
+    {% for player in entry.player_ids -%}
+      {% if as_club and player.club_id == as_club or as_player and player == as_player %}
+        {% set ns.points = ns.points + match.get_points(entry) %}
+        {% if match.winning_entry_id == entry %}
+          {% set ns.win = True %}
+        {% else %}
+          {% set ns.lost = True %}
+        {% endif %}
+      {% endif %}
+    {%- endfor %}
+  {%- endfor %}
+
+  {% if ns.win and ns.lost %}
+    {% set color = 'warning' %}
+  {% elif ns.win %}
+    {% set color = 'success' %}
+  {% elif ns.lost %}
+    {% set color = 'danger' %}
+  {% endif %}
+
+  {% if as_club or as_player %}
+    <span class="badge-pill badge-{{ color }} p-2">{{ ns.points }}</span>
+  {% endif %}
+{%- endmacro %}
+
+{% macro render_set(match, set_) -%}
+  {% set score1, score2 = [
+    (match.team1set1, match.team2set1),
+    (match.team1set2, match.team2set2),
+    (match.team1set3, match.team2set3),
+  ][set_ - 1] %}
+  {% set cls = {
+    True: 'class="font-weight-bold"',
+    False: 'class=""',
+  } %}
+
+  {% if score1 or score2 %}
+    <span {{ cls[score1 > score2] }}>{{ score1 }}</span>
+    <br>
+    <span {{ cls[score2 > score1] }}>{{ score2 }}</span>
+  {% endif %}
 {%- endmacro %}
