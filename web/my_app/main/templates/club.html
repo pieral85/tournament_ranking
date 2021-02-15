@@ -67,7 +67,8 @@
   <div class="tab-pane fade" id="matches-content" role="tabpanel" aria-labelledby="matches-tab">
 
     {% set matches = club.real_match_ids %}
-    <table data-toggle="table"
+    <table id="club_matches"
+      data-toggle="table"
       data-show-columns="true"
       data-pagination="true"
       data-search="true"
@@ -114,4 +115,5 @@
   <script src="{{ url_for('main.static', filename='js/bootstrap-table.js') }}"></script><!-- TODO use .min again once github PR will be merged -->
   <script src="{{ url_for('main.static', filename='js/bootstrap-table-fr-FR.min.js') }}"></script>
   <script src="{{ url_for('main.static', filename='js/fontawesome-5.12.2.all.min.js') }}"></script>
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table-custom.js') }}"></script>
 {% endblock scripts %}
