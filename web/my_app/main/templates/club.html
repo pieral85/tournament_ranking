@@ -34,6 +34,7 @@
   </li>
 </ul>
 <div class="tab-content" id="myTabContent">
+  {% set show_ranking = request.args.get('show_ranking', '0') %}
   <div class="tab-pane fade show active" id="players-content" role="tabpanel" aria-labelledby="players-tab">
     <table data-toggle="table"
       data-search="true"
@@ -42,21 +43,20 @@
       data-search-accent-neutralise="true">
       <thead>
         <tr>
-          <th data-sortable="true" data-field="rank">Rang</th>
-          <th data-sortable="true" data-field="fullname">Joueur</th>
-          <!-- <th data-sortable="true" data-field="firstname">Prénom</th>
-          <th data-sortable="true" data-field="name">Nom</th> -->
-          <th>Points</th>
+          <th rowspan="2" data-sortable="true" data-field="players" data-valign="middle">Joueur</th>
+          <th colspan="2" data-visible="{{ show_ranking }}">Classement</th>
+        </tr>
+        <tr>
+          <th data-field="points" data-visible="{{ show_ranking }}">Points</th>
+          <th data-sortable="true" data-field="rank" data-visible="{{ show_ranking }}">Rang</th>
         </tr>
       </thead>
       <tbody>
         {% for p_ranking in players_rankings %}
         <tr>
-          <td>{{ p_ranking[0] }}</td>
-          <!-- <td>{{ p_ranking[2].firstname }}</td>
-          <td><a href="{{ url_for('main.player', player_id=p_ranking[2].id) }}">{{ p_ranking[2].name }}</a></td> -->
-          <td><a href="{{ url_for('main.player', player_id=p_ranking[2].id) }}">{{ p_ranking[2].fullname }}</a></td>
+          <td><a href="{{ url_for('main.player', player_id=p_ranking[2].id, show_ranking=show_ranking) }}">{{ p_ranking[2].fullname }}</a></td>
           <td>{{ p_ranking[1] }}</td>
+          <td>{{ p_ranking[0] }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -105,9 +105,6 @@
   </div>
   <!-- TODO Add vote form here -->
 
-
-  <h2>Matches</h2>
-  <div>TODO (split sections in tabs)</div>
 {% endblock content %}
 {% block scripts %}
   <script src="{{ url_for('main.static', filename='js/popper-1.14.7.min.js') }}"></script>
