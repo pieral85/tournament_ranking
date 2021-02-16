@@ -8,7 +8,8 @@
   <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
 {% endblock head %}
 {% block content %}
-  <h1>Classement des clubs</h1>
+  {% set show_ranking = request.args.get('show_ranking', '0') %}
+  <h1>{{ "Classement des clubs" if show_ranking | int else "Clubs" }}</h1>
   <table data-toggle="table"
     data-search="true"
     data-show-columns="true"
@@ -16,12 +17,12 @@
     data-search-accent-neutralise="true"
     class="table-striped">
     <!-- data-filter-control="true" -->
-    {% set show_ranking = request.args.get('show_ranking', '0') %}
     <thead>
-      <tr>
-        <th data-sortable="true" data-field="name">Nom</th>
-        {# TODO Add double row:
-        <th colspan="2" data-visible="{{ show_ranking }}">Classement</th> #}
+      <tr class="bg-success text-dark">
+        <th rowspan="2" data-sortable="true" data-field="name" data-valign="middle">Nom</th>
+        <th colspan="2" data-visible="{{ show_ranking }}">Classement</th>
+      </tr>
+      <tr class="bg-success text-dark">
         <th data-visible="{{ show_ranking }}">Points</th>
         <th data-sortable="true" data-field="rank" data-visible="{{ show_ranking }}">Rang</th>
       </tr>
