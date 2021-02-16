@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'helper.j2' import render_players, render_points, render_set %}
+{% from 'helper.j2' import render_players, render_points, render_rank, render_set %}
 
 {% block title %}{{ club.name }}{% endblock title %}
 {% block head %}
@@ -11,12 +11,7 @@
   <h1 class="text-success"><i>{{ club.name }}</i></h1>
   <div>
     {% if ranking %}
-      {% if ranking[0] == 1 %}
-        {% set nth = 'er' %}
-      {% else %}
-        {% set nth = 'ème' %}
-      {% endif %}
-      <h5>Classement des clubs: {{ ranking[0] }}{{ nth }} ({{ ranking[1] }} points)</h5>
+      <h5>Classement des clubs: {{ render_rank(ranking[0]) }} ({{ ranking[1] }} points)</h5>
     {% else %}
       Pas de classement disponible pour ce club
     {% endif %}

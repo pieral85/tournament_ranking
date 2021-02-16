@@ -74,3 +74,12 @@
     <span {{ cls[score2 > score1] }}>{{ score2 }}</span>
   {% endif %}
 {%- endmacro %}
+
+{% macro render_rank(rank) -%}
+    {% if rank == 1 %}
+      {% set nth = 'er' %}
+    {% else %}
+      {% set nth = 'ème' %}
+    {% endif %}
+    {{ rank }}{{ nth }}
+{%- endmacro %}
