@@ -53,9 +53,8 @@ def clubs():
 
 @main.route('/joueurs')
 def players():
-    return 'TODO'
     show_ranking = _url_param_to_bool('show_ranking')
-    return render_template('players.html', rankings=club_rankings, show_ranking=show_ranking)
+    return render_template('players.html', rankings=player_rankings, show_ranking=show_ranking)
 
 @main.route('/matchs')
 def matches():

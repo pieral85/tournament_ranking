@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Classement{% endblock title %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('main.static', filename='css/bootstrap-table.min.css') }}">
+  <!-- TODO Implement this locally (if required) -->
+  <link rel="stylesheet" href="{{ url_for('main.static', filename='css/fontawesome-5.12.2.all.min.css') }}">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
+{% endblock head %}
+{% block content %}
+  {% set show_ranking = request.args.get('show_ranking', '0') %}
+  <h1>{{ "Classement des joueurs" if show_ranking | int else "Joueurs" }}</h1>
+  <table data-toggle="table"
+    data-search="true"
+    data-show-columns="true"
+    data-pagination="true"
+    data-search-accent-neutralise="true"
+    class="table-striped">
+    <!-- data-filter-control="true" -->
+    <thead>
+      <tr class="bg-warning text-dark">
+        <th rowspan="2" data-sortable="true" data-field="name" data-valign="middle" class="w-50">Joueur</th>
+        <th rowspan="2" data-sortable="true" data-field="club" data-valign="middle">Club</th>
+        <th colspan="2" data-visible="{{ show_ranking }}">Classement</th>
+      </tr>
+      <tr class="bg-warning text-dark">
+        <th data-visible="{{ show_ranking }}">Points</th>
+        <th data-sortable="true" data-field="rank" data-visible="{{ show_ranking }}">Rang</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ranking in rankings %}
+      <tr>
+        <td><a class="text-warning" href="{{ url_for('main.player', player_id=ranking[2].id, show_ranking=show_ranking) }}">{{ ranking[2].fullname }}</a></td>
+        <td><a href="{{ url_for('main.club', club_id=ranking[2].club_id.id, show_ranking=show_ranking) }}">{{ ranking[2].club_id.name }}</a></td>
+        <td>{{ ranking[1] }}</td>
+        <td>{{ ranking[0] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
+{% block scripts %}
+  <script src="{{ url_for('main.static', filename='js/popper-1.14.7.min.js') }}"></script><!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+  {{ super() }}
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table.js') }}"></script><!-- TODO use .min again once github PR will be merged --><!-- <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script> -->
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table-fr-FR.min.js') }}"></script>
+  <script src="{{ url_for('main.static', filename='js/fontawesome-5.12.2.all.min.js') }}"></script>
+{% endblock scripts %}
