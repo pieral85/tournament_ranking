@@ -329,8 +329,7 @@ class Match(Base):
     @hybrid_property
     def winning_entry_id(self):
         if self._winning_entry_id == False:
-            if self.is_played and self.winner == Winner.none.value or \
-               not self.is_played and self.winner != Winner.none.value:
+            if self.is_played and self.winner == Winner.none.value:
                 raise ValueError(f'{self}: `is_played` and `winner` attributes do not match.')
             if self.winner == Winner.none.value:
                 self._winning_entry_id = None
