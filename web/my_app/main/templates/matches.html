@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% from 'helper.j2' import render_players, render_set %}
+
+{% block title %}Matchs{% endblock title %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('main.static', filename='css/bootstrap-table.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('main.static', filename='css/fontawesome-5.12.2.all.min.css') }}">
+{% endblock head %}
+{% block content %}
+  <h1 class="text-success"><i>Matchs</i></h1>
+  <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active text-info font-weight-bold" id="matches_done-tab" data-toggle="tab" href="#matches_done-content" role="tab" aria-controls="matches_done" aria-selected="true">Joués</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-info font-weight-bold" id="matches_current-tab" data-toggle="tab" href="#matches_current-content" role="tab" aria-controls="matches_current" aria-selected="false">En cours</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-info font-weight-bold" id="matches_incoming-tab" data-toggle="tab" href="#matches_incoming-content" role="tab" aria-controls="matches_incoming" aria-selected="false">À venir</a>
+    </li>
+  </ul>
+  <div class="tab-content mb-5" id="myTabContent">
+    <div class="tab-pane fade show active" id="matches_done-content" role="tabpanel" aria-labelledby="matches_done-tab">
+      <table data-toggle="table"
+        data-show-columns="true"
+        data-pagination="true"
+        data-search="true"
+        data-search-accent-neutralise="true"
+        data-filter-control="true"
+        data-show-search-clear-button="true"
+        class="table-striped">
+        <thead>
+          <tr class="bg-info text-dark">
+            <th rowspan="2" data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
+            <th rowspan="2" data-field="players" data-sortable="true" data-valign="middle">Joueurs</th>
+            <th colspan="3" data-field="results">Résultat</th>
+          </tr>
+          <tr class="bg-info text-dark">
+            <th>S1</th>
+            <th>S2</th>
+            <th>S3</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for match in matches_done %}
+          <tr>
+            <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ render_players(match, as_club=club) }}</td>
+            <td>{{ render_set(match, 1) }}</td>
+            <td>{{ render_set(match, 2) }}</td>
+            <td>{{ render_set(match, 3) }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content %}
+{% block scripts %}
+  <script src="{{ url_for('main.static', filename='js/popper-1.14.7.min.js') }}"></script>
+  {{ super() }}
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table.js') }}"></script><!-- TODO use .min again once github PR will be merged -->
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table-fr-FR.min.js') }}"></script>
+  <script src="{{ url_for('main.static', filename='js/fontawesome-5.12.2.all.min.js') }}"></script>
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table-filter-control.min.js') }}"></script>
+{% endblock scripts %}

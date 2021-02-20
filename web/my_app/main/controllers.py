@@ -4,6 +4,7 @@ from flask import Blueprint, current_app, render_template, request
 
 from .. import session
 from ..models.club import Club
+from ..models.match import Match
 from ..models.player import Player
 from ...tools.ranking import get_ranks
 
@@ -58,9 +59,9 @@ def players():
 
 @main.route('/matchs')
 def matches():
-    return 'TODO'
     show_ranking = _url_param_to_bool('show_ranking')
-    return render_template('matches.html', rankings=club_rankings, show_ranking=show_ranking)
+    played_matches = session.query(Match).filter_by(is_played=True).all()
+    return render_template('matches.html', matches_done=played_matches)
 
 @main.route('/clubs/<int:club_id>')#, methods=['GET'])
 def club(club_id):
