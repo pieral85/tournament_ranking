@@ -1,11 +1,13 @@
-{% macro _render_player(match, entry, player, render_points, it_is_me=False) -%}
+{% macro _render_player(match, entry, player, render_points, it_is_me=0) -%}
   {% set win = match.winning_entry_id == entry %}
   {% set bold = 'font-weight-bold' if win else 'font-weight-light' %}
 
   {% if it_is_me %}
     {% set color = 'success' if win else 'danger' %}
+    {% set text = 'white' %}
   {% else %}
     {% set color = 'dark' %}
+    {% set text = 'muted' if it_is_me == False else 'white' %}
   {% endif %}
 
   <span class="{{ bold }}"">
@@ -26,6 +28,9 @@
         +
       {% endif %}
       {% set it_is_me = as_club and player.club_id == as_club or as_player and player == as_player %}
+      {% if (as_club or as_player) and not it_is_me %}
+        {% set it_is_me = 0 %}
+      {% endif %}
       <span class="mx-1">{{ _render_player(match, entry, player, render_points, it_is_me=it_is_me) }}</span>
     {%- endfor %}
     <br>
