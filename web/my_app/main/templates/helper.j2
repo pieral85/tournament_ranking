@@ -1,4 +1,4 @@
-{% macro _render_player(match, entry, player, it_is_me=False) -%}
+{% macro _render_player(match, entry, player, render_points, it_is_me=False) -%}
   {% set win = match.winning_entry_id == entry %}
   {% set bold = 'font-weight-bold' if win else 'font-weight-light' %}
 
@@ -10,19 +10,24 @@
 
   <span class="{{ bold }}"">
     <span>{{ player }}</span>
+    {% if render_points %}
     <span class="badge badge-pill badge-{{ color }}">
       {{ match.get_points(entry) }}
     </span>
+    {% endif %}
   </span>
 {%- endmacro %}
 
 {# TODO implement font-weight-light #}
 
-{% macro render_players(match, as_club=None, as_player=None) -%}
+{% macro render_players(match, render_points, as_club=None, as_player=None) -%}
   {% for entry in (match.team1_id.entry_id, match.team2_id.entry_id) -%}
     {% for player in entry.player_ids -%}
+      {% if loop.index == 2 and not render_points %}
+        +
+      {% endif %}
       {% set it_is_me = as_club and player.club_id == as_club or as_player and player == as_player %}
-      <span class="ml-1">{{ _render_player(match, entry, player, it_is_me=it_is_me) }}</span>
+      <span class="mx-1">{{ _render_player(match, entry, player, render_points, it_is_me=it_is_me) }}</span>
     {%- endfor %}
     <br>
   {%- endfor %}

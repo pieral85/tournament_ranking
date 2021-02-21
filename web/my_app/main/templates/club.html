@@ -80,7 +80,7 @@
       {% for match in matches %}
         <tr>
           <td>{{ match.draw_id.fullname }}</td>
-          <td>{{ render_players(match, as_club=club) }}</td>
+          <td>{{ render_players(match, show_ranking != '0', as_club=club) }}</td>
           <td>{{ render_set(match, 1) }}</td>
           <td>{{ render_set(match, 2) }}</td>
           <td>{{ render_set(match, 3) }}</td>
