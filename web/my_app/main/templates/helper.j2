@@ -9,7 +9,8 @@
   {% endif %}
 
   <span class="{{ bold }}"">
-    <span>{{ player }}</span>
+    {% set show_ranking = '1' if render_points else '0'%}
+    <a class="text-{{ text }}" href="{{ url_for('main.player', player_id=player.id, show_ranking=show_ranking) }}">{{ player }}</a>
     {% if render_points %}
     <span class="badge badge-pill badge-{{ color }}">
       {{ match.get_points(entry) }}
@@ -17,8 +18,6 @@
     {% endif %}
   </span>
 {%- endmacro %}
-
-{# TODO implement font-weight-light #}
 
 {% macro render_players(match, render_points, as_club=None, as_player=None) -%}
   {% for entry in (match.team1_id.entry_id, match.team2_id.entry_id) -%}
