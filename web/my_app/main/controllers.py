@@ -60,7 +60,7 @@ def players():
 @main.route('/matchs')
 def matches():
     show_ranking = _url_param_to_bool('show_ranking')
-    played_matches = session.query(Match).filter_by(is_played=True).all()
+    played_matches = session.query(Match).filter_by(is_played=True).order_by(Match.plandate.desc()).all()
     return render_template('matches.html', matches_done=played_matches)
 
 @main.route('/clubs/<int:club_id>')#, methods=['GET'])

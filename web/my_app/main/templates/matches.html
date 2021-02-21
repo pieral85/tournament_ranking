@@ -33,6 +33,7 @@
         <thead>
           <tr class="bg-info text-dark">
             <th rowspan="2" data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
+            <th rowspan="2" data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>
             <th rowspan="2" data-field="players" data-sortable="true" data-valign="middle">Joueurs</th>
             <th colspan="3" data-field="results">Résultat</th>
           </tr>
@@ -46,6 +47,7 @@
         {% for match in matches_done %}
           <tr>
             <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ match.plandate_str }}</td>
             <td>{{ render_players(match, False, as_club=club) }}</td>
             <td>{{ render_set(match, 1) }}</td>
             <td>{{ render_set(match, 2) }}</td>

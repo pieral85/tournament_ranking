@@ -1,6 +1,7 @@
 import enum
+from datetime import datetime as dt
 
-from sqlalchemy import and_, Column, func, Integer, or_  # , String  #  , Enum
+from sqlalchemy import and_, Column, DateTime, func, Integer, or_  # , String  #  , Enum
 from sqlalchemy import event, ForeignKey
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
@@ -20,6 +21,7 @@ from .link import Link
 # from .player import Player
 
 points_dict = points_matrix.get_points_dict()
+week_days = ('Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim')
 
 
 class Winner(enum.Enum):
@@ -78,6 +80,7 @@ class Match(Base):
     team2set2 = Column(Integer, default=0)
     team1set3 = Column(Integer, default=0)
     team2set3 = Column(Integer, default=0)
+    plandate = Column(DateTime)
     # name = Column(String(50))
     # player_ids = relationship('Player', back_populates='club_id')
 
@@ -373,6 +376,11 @@ class Match(Base):
             return None
         set3 = f' {self.team1set3}/{self.team2set3}' if self.team1set3 or self.team2set3 else ''
         return f'{self.team1set1}/{self.team2set1} {self.team1set2}/{self.team2set2}{set3}'
+
+    @hybrid_property
+    def plandate_str(self):
+        day = week_days[dt.weekday(self.plandate)]
+        return f'{day} {self.plandate:%H:%M}'
 
     @property
     def session(self):
