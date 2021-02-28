@@ -8,7 +8,9 @@
   <link rel="stylesheet" href="{{ url_for('main.static', filename='css/fontawesome-5.12.2.all.min.css') }}">
 {% endblock head %}
 {% block content %}
+  {% set show_ranking = request.args.get('show_ranking', '0') %}
   <h1 class="text-warning"><i>{{ player.fullname }}</i></h1>
+  <h5 class="text-success"><a href="{{ url_for('main.club', club_id=player.club, show_ranking=show_ranking) }}">{{ player.club_id.name }}</a></h5>
   <div>
     {% if ranking %}
       <h5>Classement des joueurs: {{ render_rank(ranking[0]) }} ({{ ranking[1] }} points)</h5>
@@ -23,7 +25,6 @@
     </li>
   </ul>
   <div class="tab-content mb-5" id="myTabContent">
-    {% set show_ranking = request.args.get('show_ranking', '0') %}
     <div class="tab-pane fade show active" id="matches-content" role="tabpanel" aria-labelledby="matches-tab">
       {% set matches = player.real_match_ids %}
       <table data-toggle="table"
