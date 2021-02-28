@@ -15,6 +15,7 @@
     data-show-columns="true"
     data-pagination="true"
     data-search-accent-neutralise="true"
+    data-show-export="true" data-export-types="['excel', 'pdf']" data-export-data-type="all"
     class="table-striped">
     <!-- data-filter-control="true" -->
     <thead>
@@ -43,5 +44,14 @@
   {{ super() }}
   <script src="{{ url_for('main.static', filename='js/bootstrap-table.js') }}"></script><!-- TODO use .min again once github PR will be merged --><!-- <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script> -->
   <script src="{{ url_for('main.static', filename='js/bootstrap-table-fr-FR.min.js') }}"></script>
+
+  {# <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script> #}
+  <script src="{{ url_for('main.static', filename='js/tableExport.min.js') }}"></script>
+  {# <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script> #}
+  <script src="{{ url_for('main.static', filename='js/jspdf.min.js') }}"></script>
+  {# <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script> #}
+  <script src="{{ url_for('main.static', filename='js/jspdf.plugin.autotable.js') }}"></script>
+
+  <script src="{{ url_for('main.static', filename='js/bootstrap-table-export.min.js') }}"></script>
   <script src="{{ url_for('main.static', filename='js/fontawesome-5.12.2.all.min.js') }}"></script>
 {% endblock scripts %}
