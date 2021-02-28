@@ -1,6 +1,8 @@
-def get_ranks(records):
+def get_ranks(records, sort_by=None):
   """ TODO
-  `records` must be a list of either `Player` or `Club` instances.
+  `records`: list of either `Player` or `Club` instances.
+  `sort_by`: field name of an instance for which the sort is done. If `None` (by default),
+    default sort is applied (by points)
 
   :return: list of triplet, sorted by points (descending). Each element is as follow:
    - rank (starts at 1; can equal to previous rank in case of points equality)
@@ -16,4 +18,11 @@ def get_ranks(records):
       element[0] = previous_element[0]
     else:
       element[0] = i + 1
+
+  if sort_by:
+    try:
+      ranks.sort(key=lambda el: getattr(el[2], sort_by))
+    except AttributeError:
+      pass
+
   return ranks

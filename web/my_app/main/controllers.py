@@ -11,11 +11,6 @@ from ...tools.ranking import get_ranks
 main = Blueprint('main', __name__, template_folder='templates',
     static_folder='static', static_url_path='/main/static')
 
-club_rankings = get_ranks(session.query(Club).all())
-player_rankings = get_ranks(session.query(Player).all())
-
-
-
 def _url_param_to_bool(param_name):
     """Smartly convert an URL parameter to a boolean.
 
@@ -50,11 +45,13 @@ def index():
 @main.route('/clubs')
 def clubs():
     show_ranking = _url_param_to_bool('show_ranking')
+    club_rankings = get_ranks(session.query(Club).all(), sort_by=None if show_ranking else 'name')
     return render_template('clubs.html', rankings=club_rankings, show_ranking=show_ranking)
 
 @main.route('/joueurs')
 def players():
     show_ranking = _url_param_to_bool('show_ranking')
+    player_rankings = get_ranks(session.query(Player).all(), sort_by=None if show_ranking else 'name')
     return render_template('players.html', rankings=player_rankings, show_ranking=show_ranking)
 
 @main.route('/matchs')
@@ -68,16 +65,19 @@ def club(club_id):
     show_ranking = _url_param_to_bool('show_ranking')
     current_app.logger.info(f'Displaying club id={club_id}')  # not working TODO Let it work
     club = session.query(Club).filter_by(id=club_id).first()
+    club_rankings = get_ranks(session.query(Club).all())
     try:
         ranking = [ranking for ranking in club_rankings if ranking[2].id == club_id][0]
     except IndexError:
         ranking = None
+    player_rankings = get_ranks(session.query(Player).all(), sort_by=None if show_ranking else 'name')
     players_rankings = [ranking for ranking in player_rankings if ranking[2].club == club_id]
     return render_template('club.html', club=club, ranking=ranking, players_rankings=players_rankings, show_ranking=show_ranking)
 
 @main.route('/players/<int:player_id>')
 def player(player_id):
     player = session.query(Player).filter_by(id=player_id).first()
+    player_rankings = get_ranks(session.query(Player).all())
     try:
         ranking = [ranking for ranking in player_rankings if ranking[2].id == player_id][0]
     except IndexError:
