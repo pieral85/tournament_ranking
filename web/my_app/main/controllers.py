@@ -1,8 +1,8 @@
 #test le (just for fun) from my_app import app
 from distutils.util import strtobool
-from flask import Blueprint, current_app, render_template, request
+from flask import abort, Blueprint, current_app, jsonify, render_template, request
 
-from .. import session
+from .. import app, session
 from ..models.club import Club
 from ..models.match import Match
 from ..models.player import Player
@@ -83,3 +83,19 @@ def player(player_id):
     except IndexError:
         ranking = None
     return render_template('player.html', player=player, ranking=ranking)
+
+@app.errorhandler(403)
+def page_not_found_error(error):
+   return render_template('403.html', title='Erreur 403'), 403
+
+@app.errorhandler(500)
+def interal_server_error(error):
+   return render_template('500.html', title='Erreur 500'), 500
+
+@main.route('/expire_all')
+def expire_data():
+    token = request.args.get('token')
+    if not token or token != app.config['RESET_DATA_TOKEN']:
+        abort(403)
+    session.expire_all()
+    return jsonify(status='ok')  # TODO fetch and return all results?
