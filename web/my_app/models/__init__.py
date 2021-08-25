@@ -9,6 +9,7 @@
 # points_dict = matrix.get_points_dict()
 # test = 5
 
+from .court import Court
 from .club import Club  # Solution #1
 from .draw import Draw
 from .entry import Entry
