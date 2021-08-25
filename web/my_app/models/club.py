@@ -62,4 +62,6 @@ class Club(Base):
 @event.listens_for(Player, 'expire')
 def receive_expire(target, attrs):
     # help: https://docs.sqlalchemy.org/en/14/orm/events.html#sqlalchemy.orm.InstanceEvents.expire
+    if not target:
+        return
     target._points = None

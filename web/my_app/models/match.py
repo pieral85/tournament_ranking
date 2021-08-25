@@ -437,6 +437,8 @@ class Match(Base):
 
 @event.listens_for(Match, 'expire')
 def receive_expire(target, attrs):
+    if not target:
+        return
     # help: https://docs.sqlalchemy.org/en/14/orm/events.html#sqlalchemy.orm.InstanceEvents.expire
     target._previous_team_id = False
     target._previous_match_ids = None
