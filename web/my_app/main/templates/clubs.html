@@ -10,13 +10,7 @@
 {% block content %}
   {% set show_ranking = request.args.get('show_ranking', '0') %}
   <h1>{{ "Classement des clubs" if show_ranking | int else "Clubs" }}</h1>
-  <table data-toggle="table"
-    data-search="true"
-    data-show-columns="true"
-    data-pagination="true"
-    data-search-accent-neutralise="true"
-    data-show-export="true" data-export-types="['excel', 'pdf']" data-export-data-type="all"
-    class="table-striped">
+  {% include 'table.html' %}
     <!-- data-filter-control="true" -->
     <thead>
       <tr class="bg-success text-dark">
