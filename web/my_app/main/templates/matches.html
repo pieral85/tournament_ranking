@@ -11,17 +11,18 @@
   <h1 class="text-success"><i>Matchs</i></h1>
   <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active text-info font-weight-bold" id="matches_done-tab" data-toggle="tab" href="#matches_done-content" role="tab" aria-controls="matches_done" aria-selected="true">Joués</a>
+      <a class="nav-link text-info font-weight-bold {{ 'active' if default_tab in ('done', '') else '' }}" id="matches_done-tab" data-toggle="tab" href="#matches_done-content" role="tab" aria-controls="matches_done" aria-selected="true">Joués</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-info font-weight-bold" id="matches_current-tab" data-toggle="tab" href="#matches_current-content" role="tab" aria-controls="matches_current" aria-selected="false">En cours</a>
+      <a class="nav-link text-info font-weight-bold {{ 'active' if default_tab == 'current' else '' }}" id="matches_current-tab" data-toggle="tab" href="#matches_current-content" role="tab" aria-controls="matches_current" aria-selected="false">En cours</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-info font-weight-bold" id="matches_incoming-tab" data-toggle="tab" href="#matches_incoming-content" role="tab" aria-controls="matches_incoming" aria-selected="false">À venir</a>
+      <a class="nav-link text-info font-weight-bold {{ 'active' if default_tab == 'incoming' else '' }}" id="matches_incoming-tab" data-toggle="tab" href="#matches_incoming-content" role="tab" aria-controls="matches_incoming" aria-selected="false">À venir</a>
     </li>
   </ul>
   <div class="tab-content mb-5" id="myTabContent">
-    <div class="tab-pane fade show active" id="matches_done-content" role="tabpanel" aria-labelledby="matches_done-tab">
+
+    <div class="tab-pane fade {{ 'show active' if default_tab in ('done', '') else '' }}" id="matches_done-content" role="tabpanel" aria-labelledby="matches_done-tab">
       <table data-toggle="table"
         data-show-columns="true"
         data-pagination="true"
@@ -57,6 +58,67 @@
         </tbody>
       </table>
     </div>
+
+    <div class="tab-pane fade {{ 'show active' if default_tab == 'current' else '' }}" id="matches_current-content" role="tabpanel" aria-labelledby="matches_current-tab">
+      <table data-toggle="table"
+        data-show-columns="true"
+        data-pagination="true"
+        data-search="true"
+        data-search-accent-neutralise="true"
+        data-filter-control="true"
+        data-show-search-clear-button="true"
+        class="table-striped">
+        <thead>
+          <tr class="bg-info text-dark">
+            <th data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
+            <th data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>
+            <th data-field="players" data-sortable="true" data-valign="middle">Joueurs</th>
+            <th data-field="court" data-sortable="true" data-filter-control="select" data-valign="middle">Terrain</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for match in matches_current %}
+          <tr>
+            <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ match.plandate_str }}</td>
+            <td>{{ render_players(match, False, as_club=club) }}</td>
+            <td>{{ match.court_id.name }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane fade {{ 'show active' if default_tab == 'incoming' else '' }}" id="matches_incoming-content" role="tabpanel" aria-labelledby="matches_incoming-tab">
+      <table data-toggle="table"
+        data-show-columns="true"
+        data-pagination="true"
+        data-search="true"
+        data-search-accent-neutralise="true"
+        data-filter-control="true"
+        data-show-search-clear-button="true"
+        class="table-striped">
+        <thead>
+          <tr class="bg-info text-dark">
+            <th data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
+            <th data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>
+            <th data-field="players" data-sortable="true" data-valign="middle">Joueurs</th>
+            <th data-field="court" data-sortable="true" data-filter-control="select" data-valign="middle">Terrain</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for match in matches_incoming %}
+          <tr>
+            <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ match.plandate_str }}</td>
+            <td>{{ render_players(match, False, as_club=club) }}</td>
+            <td>{{ match.court_id.name }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
   </div>
 {% endblock content %}
 {% block scripts %}

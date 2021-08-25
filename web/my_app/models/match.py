@@ -30,6 +30,15 @@ class Winner(enum.Enum):
     team2 = 2
 
 
+class ScoreStatus(enum.Enum):
+    none = None
+    walkover = 1
+    retired = 2
+    dist = 3
+    no_match = 4
+    promoted = 5
+
+
 class Match(Base):
     __tablename__ = 'PlayerMatch'
 
@@ -62,10 +71,11 @@ class Match(Base):
     link_id = relationship('Link', back_populates='match_ids')
 
     winner = Column(Integer, default=0)  # Column(Enum(Winner))
+    scorestatus = Column(Integer)
     # link
     # court
-    # court = Column(Integer, ForeignKey('Court.id'))
-    # court_id = relationship('Court', back_populates='match_ids')
+    court = Column(Integer, ForeignKey('Court.id'))
+    court_id = relationship('Court', back_populates='match_ids')
     # # court.py: match_ids = relationship('Match', back_populates='court_id')
     # plandate Date/Heure
     # locatioh  # useful? could be reached through court.location isn't it?
@@ -318,12 +328,36 @@ class Match(Base):
 
     @hybrid_property
     def is_played(self):
-        return bool(self.team1set1 | self.team2set1)
-
+        return bool(self.team1set1 or self.team2set1 or self.scorestatus != ScoreStatus.none.value)
     @is_played.expression
     def is_played(cls):
-        # print('is_played expression')
-        return or_(cls.team1set1 > 0, cls.team2set1 > 0)
+        return or_(cls.team1set1 > 0, cls.team2set1 > 0, cls.scorestatus != ScoreStatus.none.value)
+
+    @hybrid_property
+    def playing(self):
+        return bool(self.court and self.team1set1 == 0 and self.team2set1 == 0 and self.scorestatus == ScoreStatus.none.value)
+    @playing.expression
+    def playing(cls):
+        return and_(cls.court.isnot(None), cls.team1set1 == 0, cls.team2set1 == 0, cls.scorestatus == ScoreStatus.none.value)
+
+    @hybrid_property
+    def will_play(self):
+        return bool(not self.court and self.is_planned and self.team1set1 == 0 and self.team2set1 == 0 and self.scorestatus == ScoreStatus.none.value)
+    @will_play.expression
+    def will_play(cls):
+        return and_(cls.court.is_(None), cls.is_planned, cls.team1set1 == 0, cls.team2set1 == 0, cls.scorestatus == ScoreStatus.none.value)
+
+    @hybrid_property
+    def id_internal(self):
+        """
+
+        :return: Custom identifier so that:
+         - "fake" matches are 0 (matches which are not real ones)
+         - "mirror" matches have the same value (round robin matches which oppose the same teams)
+        """
+        if self.van1 == 0 and self.van2 == 0:
+            return ''
+        return f'{self.draw}_{min(self.van1, self.van2)}_{max(self.van1, self.van2)}'
 
     # @hybrid_property
     # def winner_name(self):
@@ -378,7 +412,17 @@ class Match(Base):
         return f'{self.team1set1}/{self.team2set1} {self.team1set2}/{self.team2set2}{set3}'
 
     @hybrid_property
+    def is_planned(self):
+        return self.plandate.year >= 1900  #TODO Better way to catch "empty" datetimes?
+    @is_planned.expression
+    def is_planned(cls):
+        # print(cls, cls.plandate)
+        return cls.plandate >= 1
+
+    @hybrid_property
     def plandate_str(self):
+        if not self.is_planned:
+            return ''
         day = week_days[dt.weekday(self.plandate)]
         return f'{day} {self.plandate:%H:%M}'
 

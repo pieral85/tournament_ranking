@@ -37,9 +37,9 @@
         <a role="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split bg-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{{ url_for('main.matches', past=1) }}">Joués</a>
-          <a class="dropdown-item" href="{{ url_for('main.matches', now=1) }}">En cours</a>
-          <a class="dropdown-item" href="{{ url_for('main.matches', future=1) }}">À venir</a>
+          <a class="dropdown-item" href="{{ url_for('main.matches', when='done') }}">Joués</a>
+          <a class="dropdown-item" href="{{ url_for('main.matches', when='current') }}">En cours</a>
+          <a class="dropdown-item" href="{{ url_for('main.matches', when='incoming') }}">À venir</a>
         </div>
       </li>
     </ul>

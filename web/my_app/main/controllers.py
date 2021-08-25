@@ -7,6 +7,7 @@ from ..models.club import Club
 from ..models.match import Match
 from ..models.player import Player
 from ...tools.ranking import get_ranks
+from ...tools.models import filter_records
 
 main = Blueprint('main', __name__, template_folder='templates',
     static_folder='static', static_url_path='/main/static')
@@ -56,9 +57,15 @@ def players():
 
 @main.route('/matchs')
 def matches():
-    show_ranking = _url_param_to_bool('show_ranking')
     played_matches = session.query(Match).filter_by(is_played=True).order_by(Match.plandate.desc()).all()
-    return render_template('matches.html', matches_done=played_matches)
+    current_matches = session.query(Match).filter_by(playing=True).order_by(Match.court.asc()).all()
+    incoming_matches = session.query(Match).filter_by(will_play=True).order_by(Match.plandate.asc()).all()
+    return render_template('matches.html',
+        matches_done=filter_records(played_matches),
+        matches_current=filter_records(current_matches),
+        matches_incoming=filter_records(incoming_matches),
+        default_tab=request.args.get('when', ''),
+    )
 
 @main.route('/clubs/<int:club_id>')#, methods=['GET'])
 def club(club_id):
