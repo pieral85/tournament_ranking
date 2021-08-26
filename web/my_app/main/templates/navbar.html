@@ -9,29 +9,29 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mx-2">
+    <ul class="navbar-nav mx-2 my-1">
       <li class="btn-group nav-item dropdown">
         <a role="button" class="btn btn-secondary nav-link" href="{{ url_for('main.clubs') }}">Clubs</a>
         <a role="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split bg-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url_for('main.clubs', show_ranking=1) }}">Classement</a>
-          <a class="dropdown-item" href="#">Concours</a>
+          <!-- <a class="dropdown-item" href="#">Concours</a> -->
         </div>
       </li>
     </ul>
-    <ul class="navbar-nav mx-2">
+    <ul class="navbar-nav mx-2 my-1">
       <li class="btn-group nav-item dropdown">
         <a role="button" class="btn btn-secondary nav-link" href="{{ url_for('main.players') }}">Joueurs</a>
         <a role="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split bg-warning" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{{ url_for('main.players', show_ranking=1) }}">Classement</a>
-          <a class="dropdown-item" href="#">Concours</a>
+          <!-- <a class="dropdown-item" href="#">Concours</a> -->
         </div>
       </li>
     </ul>
-    <ul class="navbar-nav mx-2">
+    <ul class="navbar-nav mx-2 my-1">
       <li class="btn-group nav-item dropdown">
         <a role="button" class="btn btn-secondary nav-link" href="{{ url_for('main.matches') }}">Matchs</a>
         <a role="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split bg-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
