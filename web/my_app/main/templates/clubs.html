@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from 'helper.j2' import get_medal %}
 {% block title %}Classement{% endblock title %}
 {% block head %}
   {{ super() }}
@@ -25,7 +26,7 @@
     <tbody>
       {% for ranking in rankings %}
       <tr>
-        <td><a class="text-success" href="{{ url_for('main.club', club_id=ranking[2].id, show_ranking=show_ranking) }}">{{ ranking[2].name }}</a></td>
+        <td><a class="text-success" href="{{ url_for('main.club', club_id=ranking[2].id, show_ranking=show_ranking) }}">{{ get_medal(ranking[0]) }}{{ ranking[2].name }}</a></td>
         <td>{{ ranking[1] }}</td>
         <td>{{ ranking[0] }}</td>
       </tr>

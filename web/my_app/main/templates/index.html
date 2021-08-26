@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
+{% from 'helper.j2' import get_medal %}
 
 {% block title %}Page d'accueil...{% endblock title %}
 {% block content %}
   {{ super() }}
   <h2>Bienvenue au tournoi 2021<br>du Badminton Bertrix Club</h2>
+  <h3>{{ get_medal(1) + get_medal(2) + get_medal(3) }}</h3>
 {% endblock content %}

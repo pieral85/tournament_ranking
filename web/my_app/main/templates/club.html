@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'helper.j2' import render_players, render_points, render_rank, render_set %}
+{% from 'helper.j2' import get_medal, render_players, render_points, render_rank, render_set %}
 
 {% block title %}{{ club.name }}{% endblock title %}
 {% block head %}
@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('main.static', filename='css/fontawesome-5.12.2.all.min.css') }}">
 {% endblock head %}
 {% block content %}
-  <h1 class="text-success"><i>{{ club.name }}</i></h1>
+  <h1 class="text-success">{{ get_medal(ranking[0]) if ranking else '' }}<i>{{ club.name }}</i></h1>
   <div>
     {% if ranking %}
       <h5>Classement des clubs: {{ render_rank(ranking[0]) }} ({{ ranking[1] }} points)</h5>
@@ -47,7 +47,7 @@
       <tbody>
         {% for p_ranking in players_rankings %}
         <tr>
-          <td><a class="text-warning" href="{{ url_for('main.player', player_id=p_ranking[2].id, show_ranking=show_ranking) }}">{{ p_ranking[2].fullname }}</a></td>
+          <td><a class="text-warning" href="{{ url_for('main.player', player_id=p_ranking[2].id, show_ranking=show_ranking) }}">{{ get_medal(p_ranking[0]) }}{{ p_ranking[2].fullname }}</a></td>
           <td>{{ p_ranking[1] }}</td>
           <td>{{ p_ranking[0] }}</td>
         </tr>

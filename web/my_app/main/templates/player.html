@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'helper.j2' import render_players, render_points, render_rank, render_set %}
+{% from 'helper.j2' import get_medal, render_players, render_points, render_rank, render_set %}
 
 {% block title %}{{ player.fullkname }}{% endblock title %}
 {% block head %}
@@ -9,7 +9,7 @@
 {% endblock head %}
 {% block content %}
   {% set show_ranking = request.args.get('show_ranking', '0') %}
-  <h1 class="text-warning"><i>{{ player.fullname }}</i></h1>
+  <h1 class="text-warning">{{ get_medal(ranking[0]) if ranking else '' }}<i>{{ player.fullname }}</i></h1>
   <h5 class="text-success"><a href="{{ url_for('main.club', club_id=player.club, show_ranking=show_ranking) }}">{{ player.club_id.name }}</a></h5>
   <div>
     {% if ranking %}

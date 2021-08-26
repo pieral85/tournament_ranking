@@ -92,3 +92,8 @@
     {% endif %}
     {{ rank }}{{ nth }}
 {%- endmacro %}
+
+{% set _medals = {1: '\U0001F947 ', 2: '\U0001F948 ', 3: '\U0001F949 '} %}
+{% macro get_medal(rank) -%}
+  {{ _medals.get(rank, '') }}
+{%- endmacro %}
