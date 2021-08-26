@@ -85,12 +85,12 @@
 {%- endmacro %}
 
 {% macro render_rank(rank) -%}
-    {% if rank == 1 %}
-      {% set nth = 'er' %}
-    {% else %}
-      {% set nth = 'ème' %}
-    {% endif %}
-    {{ rank }}{{ nth }}
+  {% if rank == 1 %}
+    {% set nth = 'er' %}
+  {% else %}
+    {% set nth = 'ème' %}
+  {% endif %}
+  {{ rank }}{{ nth }}
 {%- endmacro %}
 
 {% set _medals = {1: '\U0001F947 ', 2: '\U0001F948 ', 3: '\U0001F949 '} %}
