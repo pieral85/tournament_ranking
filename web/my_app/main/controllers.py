@@ -41,7 +41,7 @@ def _url_param_to_bool(param_name):
 
 @main.route('/')
 def index():
-    return render_template('layout.html')
+    return render_template('index.html')
 
 @main.route('/clubs')
 def clubs():
