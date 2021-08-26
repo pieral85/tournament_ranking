@@ -103,7 +103,6 @@
             <th data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
             <th data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>
             <th data-field="players" data-sortable="true" data-valign="middle">Joueurs</th>
-            <th data-field="court" data-sortable="true" data-filter-control="select" data-valign="middle">Terrain</th>
           </tr>
         </thead>
         <tbody>
@@ -112,7 +111,6 @@
             <td>{{ match.draw_id.fullname }}</td>
             <td>{{ match.plandate_str }}</td>
             <td>{{ render_players(match, False, as_club=club) }}</td>
-            <td>{{ match.court_id.name }}</td>
           </tr>
         {% endfor %}
         </tbody>
