@@ -23,7 +23,6 @@ class Player(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))  # String(50)
     firstname = Column(String(25))  # String(25)
-    fullname = column_property(firstname + ' ' + name)  # TODO Choose fullname2 (hybrid_property) instead?
     # <table FK column name> = Column(Integer, ForeignKey('ClubTN.id'))
     club = Column(Integer, ForeignKey('Club.id'))
     # club_id = relationship('<Club class name>', back_populates='player_ids')
@@ -34,9 +33,9 @@ class Player(Base):
     entry_ids = relationship('Entry',
                              primaryjoin="or_(Player.id==Entry.player1, Player.id==Entry.player2)")
 
-    # @hybrid_property
-    # def shortname(self):
-    #     return f'{self.firstname[0]}. {self.name.upper()}'
+    @hybrid_property
+    def fullname(self):
+        return f'{self.firstname} {self.name.capitalize()}'
 
     # TODO Delete if not used (real_match_ids could be more relevant)
     @hybrid_property
@@ -86,8 +85,7 @@ class Player(Base):
         return f'<Player#{self.id}({self.fullname})>'
 
     def __str__(self):
-        # return f'{self.firstname} {self.name[:1]}.'
-        return f'{self.firstname[0]}. {self.name}'
+        return f'{self.firstname[0]}. {self.name.capitalize()}'
 
 @event.listens_for(Player, 'expire')
 def receive_expire(target, attrs):
