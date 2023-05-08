@@ -1,9 +1,26 @@
 {% extends "layout.html" %}
 {% from 'helper.j2' import get_medal %}
 
-{% block title %}Page d'accueil...{% endblock title %}
+{% block title %}Accueil{% endblock title %}
 {% block content %}
   {{ super() }}
-  <h2>Bienvenue au tournoi 2021<br>du Badminton Bertrix Club</h2>
+  <h2>Classement des clubs et joueurs</h2>
   <h3>{{ get_medal(1) + get_medal(2) + get_medal(3) }}</h3>
+  <div class="px-4 py-5 my-5 text-center">
+    <!-- <img class="d-block mx-auto mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+    <h3 class="display-5 fw-bold">Bienvenue au tournoi de Saint-Léger, édition 2022!</h3>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Cette année nous mettons en place le classement du meilleur club et du meilleur joueur/joueuse.</p>
+      <p class="lead mb-4">Les club et joueur qui seront à la première place à la fin du tournoi se verront remettre un lot!</p>
+      <!-- <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Primary button</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
+      </div> -->
+    </div>
+    <h3 class="display-5 fw-bold">Quoi d'autre?</h3>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead">Sur ce site, vous pourrez non seulement consulter les classements, mais également les matchs joués, en cours ou à venir (*), ceci en temps réel.</p>
+      <p class="mb-4">(*) Les matchs à venir sont affichés avec leur horaire.<br>Ces derniers sont <b>à titre indicatif</b> et peuvent être lancés dans un autre ordre ou à un autre moment, si cela permet le bon déroulement du tournoi!</p>
+    </div>
+  </div>
 {% endblock content %}

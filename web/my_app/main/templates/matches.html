@@ -8,8 +8,18 @@
   <link rel="stylesheet" href="{{ url_for('main.static', filename='css/fontawesome-5.12.2.all.min.css') }}">
 {% endblock head %}
 {% block content %}
-  <h1 class="text-success"><i>Matchs</i></h1>
-  <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+      {% set is_demo = request.args.get('demo_mode', '0') != '0' %}
+      {% if is_demo %}
+        <h1 class="text-info"><i>Matchs{{ {'done': ' joués', 'current': ' en cours', 'incoming': ' à venir'}.get(default_tab, '') }}</i></h1>
+        {% set table_args = '' %}
+        {% set cls_hidden = 'd-none' %}
+      {% else %}
+        <h1 class="text-info"><i>Matchs</i></h1>
+        {% set table_args = 'data-show-columns="true" data-pagination="true" data-search="true" data-search-accent-neutralise="true" data-filter-control="true" data-show-search-clear-button="true"' %}
+        {% set cls_hidden = '' %}
+      {% endif %}
+  <!-- <h1 class="text-success"><i>Matchs</i></h1> -->
+  <ul class="nav nav-tabs mt-5 {{ cls_hidden }}" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link text-info font-weight-bold {{ 'active' if default_tab in ('done', '') else '' }}" id="matches_done-tab" data-toggle="tab" href="#matches_done-content" role="tab" aria-controls="matches_done" aria-selected="true">Joués</a>
     </li>
@@ -23,15 +33,8 @@
   <div class="tab-content mb-5" id="myTabContent">
 
     <div class="tab-pane fade {{ 'show active' if default_tab in ('done', '') else '' }}" id="matches_done-content" role="tabpanel" aria-labelledby="matches_done-tab">
-      <table data-toggle="table"
-        data-show-columns="true"
-        data-pagination="true"
-        data-search="true"
-        data-search-accent-neutralise="true"
-        data-filter-control="true"
-        data-show-search-clear-button="true"
-        class="table-striped">
-        <thead>
+      <table data-toggle="table" {{ table_args }} class="table-striped">
+        <thead class="{{ cls_hidden }}">
           <tr class="bg-info text-dark">
             <th rowspan="2" data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
             <th rowspan="2" data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>
@@ -60,15 +63,8 @@
     </div>
 
     <div class="tab-pane fade {{ 'show active' if default_tab == 'current' else '' }}" id="matches_current-content" role="tabpanel" aria-labelledby="matches_current-tab">
-      <table data-toggle="table"
-        data-show-columns="true"
-        data-pagination="true"
-        data-search="true"
-        data-search-accent-neutralise="true"
-        data-filter-control="true"
-        data-show-search-clear-button="true"
-        class="table-striped">
-        <thead>
+      <table data-toggle="table" {{ table_args }} class="table-striped">
+        <thead class="{{ cls_hidden }}">
           <tr class="bg-info text-dark">
             <th data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
             <th data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>
@@ -90,15 +86,8 @@
     </div>
 
     <div class="tab-pane fade {{ 'show active' if default_tab == 'incoming' else '' }}" id="matches_incoming-content" role="tabpanel" aria-labelledby="matches_incoming-tab">
-      <table data-toggle="table"
-        data-show-columns="true"
-        data-pagination="true"
-        data-search="true"
-        data-search-accent-neutralise="true"
-        data-filter-control="true"
-        data-show-search-clear-button="true"
-        class="table-striped">
-        <thead>
+      <table data-toggle="table" {{ table_args }} class="table-striped">
+        <thead class="{{ cls_hidden }}">
           <tr class="bg-info text-dark">
             <th data-field="draw" data-sortable="true" data-filter-control="select" data-valign="middle">Tableau</th>
             <th data-field="plandate" data-sortable="true" data-filter-control="select" data-valign="middle">Horaire</th>

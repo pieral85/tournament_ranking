@@ -13,11 +13,17 @@
     <link rel="stylesheet" href="{{ url_for('main.static', filename='css/style.css') }}"><!-- TODO Delete if not needed -->
     <link rel="stylesheet" href="{{ url_for('main.static', filename='css/navbar.css') }}">
     {% endblock head %}
-    <title>{% block title %}{% endblock title %} - Saint-Léger 2021</title>
+    <title>{% block title %}{% endblock title %} - Saint-Léger 2022</title>
   </head>
   <body>
     <main>
-      {% include 'navbar.html' %}
+      {% set is_demo = request.args.get('demo_mode', '0') != '0' %}
+      {% if is_demo %}
+        {% set cls_hidden = 'd-none' %}
+      {% else %}
+        {% set cls_hidden = '' %}
+        {% include 'navbar.html' %}
+      {% endif %}
       <!-- <div class="container"> use ths one instead of div id='container'? -->
       {# <div id="content">{% block content %}Bienvenue au tournoi TODO{% endblock %}</div> #}
       <main class="container">
@@ -25,7 +31,7 @@
           {% block content %}{% endblock %}
         </div>
       </main>
-      <footer class="pt-3 mt-5 border-top">
+      <footer class="pt-3 mt-5 border-top {{ cls_hidden }}">
         <div class="row">
           <div class="col-12 col-md">
             {% block footer %}

@@ -93,11 +93,12 @@ def player(player_id):
 
 @app.errorhandler(403)
 def page_not_found_error(error):
-   return render_template('403.html', title='Erreur 403'), 403
+    return render_template('403.html', title='Erreur 403'), 403
 
 @app.errorhandler(500)
 def interal_server_error(error):
-   return render_template('500.html', title='Erreur 500'), 500
+    # import ipdb; ipdb.set_trace()
+    return render_template('500.html', title='Erreur 500'), 500
 
 @main.route('/expire_all')
 def expire_data():

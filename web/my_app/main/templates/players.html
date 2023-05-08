@@ -11,12 +11,7 @@
 {% block content %}
   {% set show_ranking = request.args.get('show_ranking', '0') %}
   <h1>{{ "Classement des joueurs" if show_ranking | int else "Joueurs" }}</h1>
-  <table data-toggle="table"
-    data-search="true"
-    data-show-columns="true"
-    data-pagination="true"
-    data-search-accent-neutralise="true"
-    class="table-striped">
+  {% include 'table.html' %}
     <!-- data-filter-control="true" -->
     <thead>
       <tr class="bg-warning text-dark">
