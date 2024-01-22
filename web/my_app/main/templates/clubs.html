@@ -10,10 +10,11 @@
 {% endblock head %}
 {% block content %}
   {% set show_ranking = request.args.get('show_ranking', '0') %}
+  {% set is_demo = request.args.get('demo_mode', '0') != '0' %}
+  {% set head_tag = 'h3' if is_demo else '' %}
   <h1>{{ "Classement des clubs" if show_ranking | int else "Clubs" }}</h1>
-  {% include 'table.html' %}
+  {% include 'table_and_head.html' %}
     <!-- data-filter-control="true" -->
-    <thead>
       <tr class="bg-success text-dark">
         <th rowspan="2" data-sortable="true" data-field="name" data-valign="middle">Club</th>
         <th colspan="2" data-visible="{{ show_ranking }}">Classement</th>
@@ -26,9 +27,9 @@
     <tbody>
       {% for ranking in rankings %}
       <tr>
-        <td><a class="text-success" href="{{ url_for('main.club', club_id=ranking[2].id, show_ranking=show_ranking) }}">{{ get_medal(ranking[0]) }}{{ ranking[2].name }}</a></td>
-        <td>{{ ranking[1] }}</td>
-        <td>{{ ranking[0] }}</td>
+        <td><a class="text-success" href="{{ url_for('main.club', club_id=ranking[2].id, show_ranking=show_ranking) }}">{{ (get_medal(ranking[0]) + ranking[2].name) | add_tag(head_tag) | safe }}</a></td>
+        <td>{{ ranking[1] | add_tag(head_tag) | safe }}</td>
+        <td>{{ ranking[0] | add_tag(head_tag) | safe }}</td>
       </tr>
       {% endfor %}
     </tbody>

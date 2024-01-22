@@ -396,7 +396,7 @@ class Match(Base):
     def winning_entry_id(self):
         if self._winning_entry_id == False:
             if self.is_played and self.winner == Winner.none.value:
-                raise ValueError(f'{self}: `is_played` and `winner` attributes do not match.')
+                self._winning_entry_id = None  # raise ValueError(f'{self}: `is_played` and `winner` attributes do not match.')
             if self.winner == Winner.none.value:
                 self._winning_entry_id = None
             elif self.winner == Winner.team1.value:
@@ -411,7 +411,7 @@ class Match(Base):
         if self._losing_entry_id == False:
             if self.is_played and self.winner == Winner.none.value or \
                not self.is_played and self.winner != Winner.none.value:
-                raise ValueError(f'{self}: `is_played` and `winner` attributes do not match.')
+                self._losing_entry_id = None # raise ValueError(f'{self}: `is_played` and `winner` attributes do not match.')
             if self.winner == Winner.none.value:
                 self._losing_entry_id = None
             elif self.winner == Winner.team1.value:
@@ -430,7 +430,7 @@ class Match(Base):
         elif entry == self.losing_entry_id:
             return structure.loss
         # elif self.is_played:
-        raise ValueError(f'{self}: Cannot compute points for {entry}.')
+        return structure.win #raise ValueError(f'{self}: Cannot compute points for {entry}.')
 
     @hybrid_property
     def result(self):

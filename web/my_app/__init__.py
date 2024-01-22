@@ -24,7 +24,7 @@ from sqlalchemy.orm import sessionmaker
 
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 # import ipdb; ipdb.set_trace()
-engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], convert_unicode=True)#, convert_unicode=True)  # , echo=False)
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])#, convert_unicode=True)  # , echo=False)
  
 # create a Declarative base class which stores the classes representing tables
 Base = declarative_base()
@@ -59,6 +59,13 @@ from .main.controllers import main
 
 app.register_blueprint(main, url_prefix='/')
 
+# Add cutom Jinja2 filter
+@app.template_filter("add_tag")
+def add_html_tag(value: str, *args) -> str:
+    if not args or not args[0]:
+        return value
+    html_tag = args[0]
+    return f'<{html_tag}>{value}</{html_tag}>'
 
 # def create_app(config_filename):
 #     app = Flask(__name__)

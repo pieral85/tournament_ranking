@@ -1,6 +1,10 @@
 {% macro _render_player(match, entry, player, render_points, it_is_me=0) -%}
   {% set win = match.winning_entry_id == entry %}
-  {% set bold = 'font-weight-bold' if win else 'font-weight-light' %}
+  {% if match.is_played %}
+    {% set bold = 'font-weight-bold' if win else 'font-weight-light' %}
+  {% else %}
+    {% set bold = '' %}
+  {% endif %}
 
   {% if it_is_me %}
     {% set color = 'success' if win else 'danger' %}
@@ -10,7 +14,7 @@
     {% set text = 'muted' if it_is_me == False else 'white' %}
   {% endif %}
 
-  <span class="{{ bold }}"">
+  <span class="{{ bold }}">
     {% set show_ranking = '1' if render_points else '0'%}
     <a class="text-{{ text }}" href="{{ url_for('main.player', player_id=player.id, show_ranking=show_ranking) }}">{{ player }}</a>
     {% if render_points %}
@@ -74,7 +78,7 @@
   ][set_ - 1] %}
   {% set cls = {
     True: 'class="font-weight-bold"',
-    False: 'class=""',
+    False: 'class="font-weight-light"',
   } %}
 
   {% if score1 or score2 %}

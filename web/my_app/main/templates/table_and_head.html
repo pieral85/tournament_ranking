@@ -1,7 +1,10 @@
 {% set is_demo = request.args.get('demo_mode', '0') != '0' %}
 {% if is_demo %}
   {% set table_args = '' %}
+  {% set cls_hidden = 'd-none' %}
 {% else %}
   {% set table_args = 'data-search="true" data-show-columns="true" data-pagination="true" data-search-accent-neutralise="true" data-show-export="true" data-export-types="[''excel'', ''pdf'']" data-export-data-type="all"' %}
+  {% set cls_hidden = '' %}
 {% endif %}
 <table data-toggle="table" {{ table_args }} class="table-striped">
+  <thead class="{{ cls_hidden }}">

@@ -13,10 +13,12 @@
         <h1 class="text-info"><i>Matchs{{ {'done': ' joués', 'current': ' en cours', 'incoming': ' à venir'}.get(default_tab, '') }}</i></h1>
         {% set table_args = '' %}
         {% set cls_hidden = 'd-none' %}
+        {% set head_tag = 'h3' %}
       {% else %}
         <h1 class="text-info"><i>Matchs</i></h1>
         {% set table_args = 'data-show-columns="true" data-pagination="true" data-search="true" data-search-accent-neutralise="true" data-filter-control="true" data-show-search-clear-button="true"' %}
         {% set cls_hidden = '' %}
+        {% set head_tag = '' %}
       {% endif %}
   <!-- <h1 class="text-success"><i>Matchs</i></h1> -->
   <ul class="nav nav-tabs mt-5 {{ cls_hidden }}" id="myTab" role="tablist">
@@ -50,12 +52,12 @@
         <tbody>
         {% for match in matches_done %}
           <tr>
-            <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ match.draw_id.fullname | add_tag(head_tag) | safe }}</td>
             <td>{{ match.plandate_str }}</td>
-            <td>{{ render_players(match, False, as_club=club) }}</td>
-            <td>{{ render_set(match, 1) }}</td>
-            <td>{{ render_set(match, 2) }}</td>
-            <td>{{ render_set(match, 3) }}</td>
+            <td>{{ render_players(match, False, as_club=club) | add_tag(head_tag) | safe }}</td>
+            <td>{{ render_set(match, 1) | add_tag(head_tag) | safe }}</td>
+            <td>{{ render_set(match, 2) | add_tag(head_tag) | safe }}</td>
+            <td>{{ render_set(match, 3) | add_tag(head_tag) | safe }}</td>
           </tr>
         {% endfor %}
         </tbody>
@@ -75,10 +77,10 @@
         <tbody>
         {% for match in matches_current %}
           <tr>
-            <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ match.draw_id.fullname | add_tag(head_tag) | safe }}</td>
             <td>{{ match.plandate_str }}</td>
-            <td>{{ render_players(match, False, as_club=club) }}</td>
-            <td>{{ match.court_id.name }}</td>
+            <td>{{ render_players(match, False, as_club=club) | add_tag(head_tag) | safe }}</td>
+            <td>{{ match.court_id.name | add_tag(head_tag) | safe }}</td>
           </tr>
         {% endfor %}
         </tbody>
@@ -97,9 +99,9 @@
         <tbody>
         {% for match in matches_incoming %}
           <tr>
-            <td>{{ match.draw_id.fullname }}</td>
+            <td>{{ match.draw_id.fullname | add_tag(head_tag) | safe }}</td>
             <td>{{ match.plandate_str }}</td>
-            <td>{{ render_players(match, False, as_club=club) }}</td>
+            <td>{{ render_players(match, False, as_club=club) | add_tag(head_tag) | safe }}</td>
           </tr>
         {% endfor %}
         </tbody>
