@@ -1,5 +1,7 @@
 import enum
+# import werkzeug
 from datetime import datetime as dt
+# from functools import cached_property
 
 from sqlalchemy import and_, Column, Boolean, DateTime, func, Integer, not_, or_  # , String  #  , Enum
 from sqlalchemy import event, ForeignKey
@@ -9,7 +11,7 @@ from sqlalchemy.orm import aliased, reconstructor, relationship
 from sqlalchemy.orm.exc import NoResultFound  # , MultipleResultsFound
 from sqlalchemy.orm.session import Session
 
-from .. import Base  # TODO import points_dict  # from . import Base, points_dict
+from .. import Base, cache  # TODO import points_dict  # from . import Base, points_dict
 # from .. import points_matrix  # working if "from ..tools import points_matrix" has been written in web/my_app/__init__.py
 # from ... import tools  # working
 from ...tools import points_matrix
@@ -114,8 +116,14 @@ class Match(Base):
                     self._gained_index = None
         return self._gained_index
 
-    @hybrid_property
+    # @hybrid_property
+    # @cache.cached(120)
+    # @cached_property
+    # @werkzeug.cached_property
     def index_team_init(self):
+        # print(f'  DELETEME index_team_init for {self}')
+        if cache.get(f"index_team_init_{self.id}"):
+            return cache.get(f"index_team_init_{self.id}")
         if self._index_team_init is None:
             print(f'  COMPUTING index_team_init for {self}')
             # if self.id in (392, 409):
@@ -157,13 +165,14 @@ class Match(Base):
             #             _index += self.your_team_id.previous_team_id.index_team_init
             #         self._index_team_init = _index
 # -------------
+        cache.set(f"index_team_init_{self.id}", self._index_team_init)
         return self._index_team_init
 
     @hybrid_property
     def index_team_final(self):
         """ ... AFTER match(es) has been done """
         if self._index_team_final is None:
-            print(f'  COMPUTING index_team_final for {self}')
+            # print(f'  COMPUTING index_team_final for {self}')
             # if self.id in (392, 409):
             #     import ipdb; ipdb.set_trace()
             if self.draw_type == DrawType.ROUND_ROBIN.value and not self.entry:
@@ -176,7 +185,7 @@ class Match(Base):
                 #     self._index_team_init = 0
                 # else:
                 #     self._index_team_final = self.index_team_init + self.gained_index
-                self._index_team_final = self.index_team_init + self.gained_index
+                self._index_team_final = self.index_team_init() + self.gained_index
         return self._index_team_final
 
     @hybrid_property
@@ -194,13 +203,14 @@ class Match(Base):
                 if self.entry:
                     self._index_match = False
                 else:
-                    self._index_match = self.team1_id.index_team_init + self.team2_id.index_team_init
+                    self._index_match = self.team1_id.index_team_init() + self.team2_id.index_team_init()
 # -------------
             else:
                 raise NotImplementedError(f'{self}: unknown drawtype value ({self.draw_type})')  # TODO we should not call this every time (add a setter on this field instead?)
         return self._index_match
 
     @hybrid_property
+    # @cache.cached(120)
     def previous_team_id(self):
         # if self.id == 15:#pdb 30:
         #     import ipdb; i.set_trace()
@@ -209,7 +219,7 @@ class Match(Base):
             # if self.id in (392, 409):
             #     import ipdb; ipdb.set_trace()
             if self.draw_type == DrawType.ELIMINATION.value:
-                print(f'   elimination')
+                # print(f'   elimination')
                 match_ = aliased(Match)
                 try:
                     self._previous_team_id = (
@@ -234,7 +244,7 @@ class Match(Base):
             #     self._previous_team_id = None  # TODO
 # ----- 1 -----
             if self.draw_type == DrawType.ROUND_ROBIN.value or self._previous_team_id is None:  # if RR or elimination with no previous_team found (could be from an existing previous round)
-                print(f'   poules')
+                # print(f'   poules')
                 if self.link and self.entry:
                     match_ = aliased(Match)
                     self._previous_team_id = (
@@ -471,20 +481,20 @@ class Match(Base):
         teams += f' VS {self.team2_id.entry_id}' if self.team2_id else ''
         return f'<Match#{self.id}({self.draw_id.fullname}{teams})>'
 
-@event.listens_for(Match, 'expire')
-def receive_expire(target, attrs):
-    if not target:
-        return
-    # help: https://docs.sqlalchemy.org/en/14/orm/events.html#sqlalchemy.orm.InstanceEvents.expire
-    target._previous_team_id = False
-    target._previous_match_ids = None
-    target._next_match_id = False
-    target._index_team_init = None
-    target._index_team_final = None
-    target._gained_index = False
-    target._index_match = None
-    target._team1_id = False
-    target._team2_id = False
-    target._winning_entry_id = False
-    target._losing_entry_id = False
-    target._round_robin_match_ids = None
+# @event.listens_for(Match, 'expire')
+# def receive_expire(target, attrs):
+#     if not target:
+#         return
+#     # help: https://docs.sqlalchemy.org/en/14/orm/events.html#sqlalchemy.orm.InstanceEvents.expire
+#     target._previous_team_id = False
+#     target._previous_match_ids = None
+#     target._next_match_id = False
+#     target._index_team_init = None
+#     target._index_team_final = None
+#     target._gained_index = False
+#     target._index_match = None
+#     target._team1_id = False
+#     target._team2_id = False
+#     target._winning_entry_id = False
+#     target._losing_entry_id = False
+#     target._round_robin_match_ids = None

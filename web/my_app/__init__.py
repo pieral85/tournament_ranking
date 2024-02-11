@@ -1,12 +1,13 @@
 from flask import Flask
 # from ..tools import points_matrix
+from flask_caching import Cache
 
 # app = Flask(__name__)
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config') # Now we can access the configuration variables via app.config["VAR_NAME"].
 # Load the configuration from the `instance` folder
 app.config.from_pyfile('config.py')
-
+cache = Cache(app)
 
 from flask_debugtoolbar import DebugToolbarExtension
 

@@ -2,7 +2,7 @@
 from distutils.util import strtobool
 from flask import abort, Blueprint, current_app, jsonify, render_template, request
 
-from .. import app, session
+from .. import app, cache, session
 from ..models.club import Club
 from ..models.match import Match
 from ..models.player import Player
@@ -11,6 +11,9 @@ from ...tools.models import filter_records
 
 main = Blueprint('main', __name__, template_folder='templates',
     static_folder='static', static_url_path='/main/static')
+# print("\n", main, main.get_send_file_max_age)
+# main.get_send_file_max_age(600)
+# print("\n", main, main.get_send_file_max_age)
 
 def _url_param_to_bool(param_name):
     """Smartly convert an URL parameter to a boolean.
@@ -68,7 +71,9 @@ def matches():
     )
 
 @main.route('/clubs/<int:club_id>')#, methods=['GET'])
+# @cache.memoize(30)
 def club(club_id):
+    print("\nclub",club_id, "NOCACHE")
     show_ranking = _url_param_to_bool('show_ranking')
     current_app.logger.info(f'Displaying club id={club_id}')  # not working TODO Let it work
     club = session.query(Club).filter_by(id=club_id).first()

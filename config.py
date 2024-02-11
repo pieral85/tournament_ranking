@@ -3,3 +3,8 @@
 # config.py	This file contains most of the configuration variables that your app needs.
 DEBUG = False
 SQLALCHEMY_ECHO = False  # TODO Delete if not used
+
+CACHE_TYPE = 'SimpleCache'
+CACHE_DEFAULT_TIMEOUT = 300
+
+SEND_FILE_MAX_AGE_DEFAULT = 3600
